@@ -1,4 +1,6 @@
+vault policy write ad-password-rules ad-password-rules.hcl
 vault policy write ad-user-policy ad-user-policy.hcl
+
 
 C:\Users\Administrator>dsadd user cn=vault,cn=users,dc=interrupt,dc=io -disabled no -pwd Corr3ct-h0rse-battery-staple!
 

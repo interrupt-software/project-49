@@ -1,4 +1,5 @@
-vault policy write ad-password-rules ad-password-rules.hcl
+vault write sys/policies/password/ad-password-rules policy=@ad-password-rules.hcl
+
 vault policy write ad-user-policy ad-user-policy.hcl
 
 

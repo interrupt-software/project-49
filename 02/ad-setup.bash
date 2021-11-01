@@ -53,7 +53,3 @@ vault write auth/ldap/config \
 vault login -method=ldap username=vault password=super-secret-password-12345
 
 vault login -method=ldap username=application01 password=super-secret-password-12345
-
-
-Netdom trust interrupt-software.aws **/domain:**interrupt-software.aws **/quarantine:No /userD:Administrator **/passwordD:zs4=lqgPJZoQtmQ2o@LMV??-PE*gPu-r
-

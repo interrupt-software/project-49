@@ -1,7 +1,3 @@
-# Overview
-
-Setup the connection between Vault and Boundary. Users log into Boundary and can retrieve service account passwords for certain target machines directly from Vault's KV store. Then a user can launch an RDP session brokered via Boundary to the target Windows machine.
-
 ## Setup Vault
 
 ### Run Vault in dev mode
@@ -22,13 +18,13 @@ vault policy write boundary-controller boundary-controller-policy.hcl
 1. Enable the database secrets engine:
 
     ```shell
-    vault secrets enable kv
+    vault secrets enable -version=2 kv
     ```
 
 2. Write a secret into kv:
 
     ```shell
-    vault kv put kv/sam password=secret
+    vault kv put kv/sam password=secret username=Administrator
     ```
 
 
@@ -130,7 +126,7 @@ A credential library:
 1. Create library for sam credentials
 
     ```shell
-    export SAM_CRED_LIB_ID=$(boundary credential-libraries create vault -credential-store-id ${CS_ID} -vault-path "kv/sam" -name "sam user" -format json | jq -r .item.id)
+    export SAM_CRED_LIB_ID=$(boundary credential-libraries create vault -credential-store-id ${CS_ID} -vault-path "kv/data/sam" -name "sam user" -format json | jq -r .item.id)
     ```
 
 ### Add Credential Libraries to Targets
@@ -161,14 +157,21 @@ Application credentials are returned to the user from the controller. Ingress an
 
 ## Use Boundary to connect via RDP
 
-1. Connect to Boundary via the Windows or Mac desktop app and click `connect` next to the target host. You can then reveal the password.
+1. Connect to Boundary via the Windows or Mac desktop app and click `connect` next to the target host. You can then reveal the username and password.
 
-2. Run the following commands from your powershell or terminal
+2. Copy the Proxy URL which looks like this: 127.0.0.1:53913 and run the following command:
 
     ```shell
-    export BOUNDARY_ADDR=http://gitlab-runner.home:9200
-    export BOUNDARY_TOKEN=at_WUO0cfnkDf_s13B9yLMG1dKyY8NPNW21dBo7mDaedBjNgDoffFMWkSjTzNq9tfxGvjVAWavhtdR8GdH6CCFvHtsS4UKs1pajMju6cYGPndiMvbjTWfBg1LXESFWVE
-    boundary connect rdp -target-id $WIN_TARGET_ID -host-id $WINDOWS_HOST
+    mstsc /v:127.0.0.1:53537
     ```
 
-3. The RDP client will automatically show up, login with the password shown
+<!-- ## Use Boundary to connect via RDP
+# Below assumes you have Boundary installed which is not usually the case. A better workflow is to use cmd or powershell with mstsc /v:127.0.0.1:53537 example below
+    # export BOUNDARY_ADDR=http://gitlab-runner.home:9200
+    # export BOUNDARY_TOKEN=at_WUO0cfnkDf_s13B9yLMG1dKyY8NPNW21dBo7mDaedBjNgDoffFMWkSjTzNq9tfxGvjVAWavhtdR8GdH6CCFvHtsS4UKs1pajMju6cYGPndiMvbjTWfBg1LXESFWVE
+    # boundary connect rdp -target-id $WIN_TARGET_ID -host-id $WINDOWS_HOST -->
+
+<!-- Windows Powershell example:
+PS C:\Users\Sam> $Env:BOUNDARY_TOKEN = "at_WUO0cfnkDf_s13B9yLMG1dKyY8NPNW21dBo7mDaedBjNgDoffFMWkSjTzNq9tfxGvjVAWavhtdR8GdH6CCFvHtsS4UKs1pajMju6cYGPndiMvbjTWfBg1LXESFWVE"
+PS C:\Users\Sam> $Env:BOUNDARY_ADDR = "http://gitlab-runner.home:9200"
+PS C:\Users\Sam> boundary connect rdp -target-id ttcp_pn0bqwD64X -host-id hst_HyfpgpZctf -->

@@ -101,7 +101,7 @@ sudo mkdir --parents /etc/boundary.d
 sudo mv boundary-controller.hcl /etc/boundary.d
 sudo chown --recursive boundary:boundary /etc/boundary.d
 
-sudo cat << EOF > boundary-controler.service
+sudo cat << EOF > boundary-controller.service
 [Unit]
 Description=boundary controller
 

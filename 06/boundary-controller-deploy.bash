@@ -118,7 +118,7 @@ WantedBy=multi-user.target
 EOF
 
 sudo chown root:root boundary-controller.service
-sudo mv vault.service /usr/lib/systemd/system/
+sudo mv boundary-controller.service /usr/lib/systemd/system/
 sudo chmod 644 /usr/lib/systemd/system/boundary-controller.service
 sudo ln -s /usr/lib/systemd/system/boundary-controller.service /etc/systemd/system/boundary-controller.service
 

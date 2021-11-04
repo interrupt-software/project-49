@@ -121,6 +121,8 @@ sudo chown root:root boundary-controler.service
 sudo mv boundary-controler.service /etc/systemd/system
 sudo chmod 664 /etc/systemd/system/boundary-controler.service
 
+ln -s /etc/systemd/system/boundary-controller.service /etc/systemd/system/boundary-controller.service
+
 sudo systemctl daemon-reload
 sudo systemctl enable boundary-controler
 sudo systemctl start boundary-controler

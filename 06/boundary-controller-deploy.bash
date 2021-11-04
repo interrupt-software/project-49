@@ -117,17 +117,16 @@ CapabilityBoundingSet=CAP_SYSLOG CAP_IPC_LOCK
 WantedBy=multi-user.target
 EOF
 
-sudo chown root:root boundary-controler.service
-sudo mv boundary-controler.service /etc/systemd/system
-sudo chmod 664 /etc/systemd/system/boundary-controler.service
+sudo chown root:root boundary-controller.service
+sudo mv vault.service /usr/lib/systemd/system/
+sudo chmod 644 /usr/lib/systemd/system/boundary-controller.service
+sudo ln -s /usr/lib/systemd/system/boundary-controller.service /etc/systemd/system/boundary-controller.service
 
-ln -s /etc/systemd/system/boundary-controller.service /etc/systemd/system/boundary-controller.service
-
+sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
-sudo systemctl enable boundary-controler
-sudo systemctl start boundary-controler
-
-sudo /usr/local/bin/boundary database init -config /etc/boundary.d/boundary-controller.hcl 
+sudo systemctl enable boundary-controller
+sudo systemctl start boundary-controller
+sudo systemctl status boundary-controller
 
 # For troubleshooting 
-# sudo systemctl restart boundary-controler; sudo tail -f /var/log/syslog 
+# sudo systemctl restart boundary-controller; sudo tail -f /var/log/syslog 

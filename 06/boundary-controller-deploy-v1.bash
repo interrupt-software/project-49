@@ -68,6 +68,12 @@ psql -U boundary -h localhost -p 5432 boundary -W
 
 sudo useradd --system --home /etc/boundary.d --shell /bin/false boundary
 
+# Prepare work on Vault
+
+export VAULT_TOKEN=admin.token.for.setup
+VAULT_ADDR=https://vault.interrupt-software.ca:8200
+
+# We will replace the VAULT_TOKEN later
 
 vault secrets enable transit
 vault write -f transit/keys/boundary-root
@@ -85,9 +91,6 @@ sudo chown root:root boundary
 sudo mv boundary /usr/local/bin/.
 /usr/local/bin/boundary config autocomplete install
 complete -C /usr/local/bin/boundary boundary
-
-export VAULT_TOKEN=admin.token.for.setup
-VAULT_ADDR=https://vault.interrupt-software.ca:8200
 
 # Set a unique token for the Boundary KMS exchange
 VAULT_TOKEN=$(vault token create -policy=boundary-kms-transit -format=json | jq -r '.auth.client_token')

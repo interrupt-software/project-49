@@ -11,7 +11,7 @@ sudo mv boundary /usr/local/bin/.
 /usr/local/bin/boundary config autocomplete install
 
 VAULT_ADDR=https://vault.interrupt-software.ca:8200
-VAULT_TOKEN=$(vault token create -policy=boundary-kms-transit)
+VAULT_TOKEN=$(vault token create -policy=boundary-kms-transit -format=json | jq -r '.auth.client_token')
 WORKER_ADDR=$(sudo ifconfig eth0 | awk -F ' *|:' '/inet /{print $3}')
 
 cat << EOF > boundary-worker.hcl
@@ -78,6 +78,7 @@ EOF
 sudo chown root:root boundary-worker.service
 sudo mv boundary-worker.service /etc/systemd/system
 sudo chmod 664 /etc/systemd/system/boundary-worker.service
+sudo ln -s /usr/lib/systemd/system/boundary-worker.service /etc/systemd/system/boundary-worker.service
 
 sudo systemctl daemon-reload
 sudo systemctl enable boundary-worker

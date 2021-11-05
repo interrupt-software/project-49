@@ -51,8 +51,7 @@ kms "transit" {
   namespace          = "root/"
 
   // TLS Configuration
-  tls_client_cert    = "/etc/boundary.d/fullchain.pem"
-  tls_client_key     = "/etc/boundary.d/privkey.pem"
+  tls_skip_verify    = "true"
 }
 EOF
 

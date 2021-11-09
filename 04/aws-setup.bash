@@ -18,19 +18,18 @@ vault write aws/roles/my-role \
         credential_type=iam_user \
         policy_document=-<<EOF
 {
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "Stmt1426528957000",
+   "Version": "2012-10-17",
+   "Statement": [{
       "Effect": "Allow",
       "Action": [
-        "ec2:*"
+         "ec2:DescribeInstances",
+         "ec2:DescribeImages",
+         "ec2:DescribeTags",
+         "ec2:DescribeSnapshots"
       ],
-      "Resource": [
-        "*"
-      ]
-    }
-  ]
+      "Resource": "*"
+   }
+   ]
 }
 EOF
 

@@ -6,13 +6,17 @@ vault write aws/config/lease lease=30d lease_max=30d
 # to the user that holds the keys and is able to manage key rotation.
 # This is the target account to manage.
 
+# While the config language uses the word `root`, this setup does not 
+# require the use the AWS root account credentials. Instead, we generate 
+# a dedicated user that can perform these actions against a role.
+
 vault write aws/config/root \
   access_key=$AWS_ACCESS_KEY_ID \
   secret_key=$AWS_SECRET_ACCESS_KEY \
   region=us-west-1
 
-# The role reflect the generation of a dynamic, derived account
-# from the user. It does not inherit the root-user privileges
+# The role reflects the generation of a dynamic, derived user/role
+# from the root-user. It does not inherit the root-user privileges
 # and instead uses the given privileges in the `aws-policy`
 
 vault write aws/roles/my-role \

@@ -27,6 +27,7 @@ or
 
 vault write aws/roles/my-role \
         credential_type=iam_user \
+        iam_groups=group1,group2 \
         policy_document=-<<EOF
 {
    "Version": "2012-10-17",

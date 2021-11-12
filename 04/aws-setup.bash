@@ -2,6 +2,10 @@ vault secrets list
 vault secrets enable aws
 vault write aws/config/lease lease=30d lease_max=30d
 
+# The AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY keys correspond 
+# to the user that holds the keys and is able to manage key rotation.
+# This is the target account to manage.
+
 vault write aws/config/root \
   access_key=$AWS_ACCESS_KEY_ID \
   secret_key=$AWS_SECRET_ACCESS_KEY \
@@ -33,8 +37,6 @@ vault write aws/roles/my-role \
 EOF
 
 aws iam list-users
-
-# vault write -force aws/config/rotate-root
 
 # Explore one-time values exposed for the new keys
 vault read aws/creds/my-role

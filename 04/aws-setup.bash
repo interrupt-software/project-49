@@ -11,6 +11,10 @@ vault write aws/config/root \
   secret_key=$AWS_SECRET_ACCESS_KEY \
   region=us-west-1
 
+# The role reflect the generation of a dynamic, derived account
+# from the user. It does not inherit the root-user privileges
+# and instead uses the given privileges in the `aws-policy`
+
 vault write aws/roles/my-role \
         credential_type=iam_user \
         policy_document=@aws-policy
